@@ -6,6 +6,8 @@ and formatting through a command line, Python API or browser playground.
 
 Repository: <https://github.com/center4aai/j2prompt-lint>.
 
+Demo: [recorded talk and live demo](https://youtu.be/R4AdhZfKbcs).
+
 ## Browser playground
 
 The ready-to-use application is in `docs/`, including its Python/WebAssembly
