@@ -1,0 +1,5 @@
+{# j2pl: vars(required=[city, day, forecast]) #}
+{# j2pl: untrusted(forecast) #}
+Write a two-sentence weather summary for {{ city }} on {{ day }}.
+Use only the forecast between the tags below.
+<forecast>{{ forecast }}</forecast>

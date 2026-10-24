@@ -1,0 +1,95 @@
+[project]
+name = "j2prompt-lint"
+dynamic = ["version"]
+description = "Static, model-free, AST-level linter for Jinja2 LLM prompt templates."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "Apache-2.0"
+authors = [{ name = "Jack" }]
+dependencies = ["jinja2>=3.0", "tokenizers>=0.15"]
+
+[project.optional-dependencies]
+hf = ["transformers>=4.40"]
+cl100k = ["tiktoken>=0.7,<1"]
+
+[project.scripts]
+j2prompt-lint = "j2prompt_lint.cli.main:main"
+j2prompt-lint-lsp = "j2prompt_lint.lsp.server:main"
+
+[build-system]
+requires = ["hatchling>=1.29"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/j2prompt_lint/__about__.py"
+
+[tool.hatch.build.targets.sdist]
+only-include = ["src/j2prompt_lint", "LICENSE", "README.md", "pyproject.toml", "uv.lock"]
+
+[dependency-groups]
+dev = [
+    "httpx>=0.27",
+    "identify>=2.5",
+    "python-dotenv>=1.0",
+    "jsonschema>=4.21",
+    "mypy>=1.15",
+    "pre-commit>=4.0",
+    "pymarkdownlnt>=0.9",
+    "pytest>=8.3",
+    "pytest-cov>=6.1",
+    "pyyaml>=6.0",
+    "ruff>=0.11",
+    "types-PyYAML>=6.0",
+    "markdown-it-py==4.2.0",
+    "hatchling>=1.29",
+    "tiktoken>=0.7,<1",
+]
+
+[tool.uv]
+default-groups = ["dev"]
+
+[tool.ruff]
+target-version = "py311"
+src = ["src"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM", "ANN", "D", "RUF"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["D103"]
+
+[tool.mypy]
+strict = true
+warn_unused_ignores = true
+mypy_path = "src"
+files = ["src", "tests", "tools"]
+
+[[tool.mypy.overrides]]
+module = "transformers.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "tiktoken.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "tokenizers.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "jsonschema.*"
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "--cov=j2prompt_lint --cov-report=term-missing --import-mode=importlib"
+
+[tool.coverage.run]
+source = ["src"]
+
+[tool.coverage.report]
+fail_under = 90

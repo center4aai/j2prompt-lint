@@ -1,0 +1,2 @@
+# Keep served source files LF on every supported checkout.
+* text=auto eol=lf

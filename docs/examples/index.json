@@ -1,0 +1,59 @@
+{
+  "default": "pinj",
+  "examples": [
+    {
+      "id": "pvar",
+      "file": "pvar_contract.j2",
+      "rule_class": "PVAR",
+      "title": "PVAR: reads outside the variable contract",
+      "summary": "The contract names customer_name and order_id; the template also reads delivery_window and agent_name.",
+      "options": {
+        "declare": "customer_name,order_id"
+      }
+    },
+    {
+      "id": "pchat",
+      "file": "pchat_no_end_of_turn.j2",
+      "rule_class": "PCHAT",
+      "title": "PCHAT: a missing turn terminator",
+      "summary": "Inspect a constructed chat template with a missing end-of-turn marker.",
+      "options": {}
+    },
+    {
+      "id": "pinj",
+      "file": "pinj_display_name.j2",
+      "rule_class": "PINJ",
+      "title": "PINJ: customer note in an instruction binding",
+      "summary": "The annotated untrusted customer_note flows into system_prompt and then a whole-prompt interpolation. Inspect both source-located taint surfaces.",
+      "options": {
+        "untrusted": "customer_note"
+      }
+    },
+    {
+      "id": "ptok",
+      "file": "ptok_long_instructions.j2",
+      "rule_class": "PTOK",
+      "title": "PTOK: a static text budget",
+      "summary": "A budget of24 is applied to onboarding instructions. The browser discloses its unavailable tokenizer count.",
+      "options": {
+        "budget": 24
+      }
+    },
+    {
+      "id": "pfmt",
+      "file": "pfmt_drift.j2",
+      "rule_class": "PFMT",
+      "title": "PFMT: review a formatting repair",
+      "summary": "Excess blank lines, an unspaced Jinja delimiter and mixed indentation. Open Fix preview to inspect the proposed edits.",
+      "options": {}
+    },
+    {
+      "id": "clean",
+      "file": "clean_chat_turns.j2",
+      "rule_class": null,
+      "title": "Clean: a weather-summary prompt",
+      "summary": "An inline variable contract and delimited forecast data in a weather-summary prompt.",
+      "options": {}
+    }
+  ]
+}

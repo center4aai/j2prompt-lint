@@ -1,0 +1,50 @@
+{
+  "name": "j2prompt-lint-vscode",
+  "displayName": "j2prompt-lint",
+  "description": "Static, model-free linter for Jinja2 LLM prompt templates (PVAR/PCHAT/PINJ/PTOK/PFMT).",
+  "version": "0.0.2",
+  "publisher": "j2prompt-lint",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters"
+  ],
+  "keywords": [
+    "jinja2",
+    "jinja",
+    "prompt",
+    "llm",
+    "linter",
+    "prompt-engineering"
+  ],
+  "preview": true,
+  "qna": false,
+  "license": "Apache-2.0",
+  "main": "./extension.js",
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage:jinja",
+    "onLanguage:jinja-html",
+    "workspaceContains:**/*.j2"
+  ],
+  "contributes": {
+    "configuration": {
+      "title": "j2prompt-lint",
+      "properties": {
+        "j2promptLint.path": {
+          "type": "string",
+          "default": "j2prompt-lint",
+          "description": "Path to the j2prompt-lint executable."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "lint": "j2prompt-lint --format json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/center4aai/j2prompt-lint.git"
+  }
+}

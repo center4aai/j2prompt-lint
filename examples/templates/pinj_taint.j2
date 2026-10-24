@@ -1,0 +1,4 @@
+{# j2pl: untrusted(customer_note) #}
+{% set system_prompt = "You write polite replies for a garden centre. Note from the customer: " ~ customer_note %}
+{{ system_prompt }}
+Reply in two sentences and suggest one plant that suits a shady balcony.

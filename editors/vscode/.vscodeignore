@@ -1,0 +1,7 @@
+# Exclude editor-launch files and maps from the VSIX package.
+.vscode/**
+.vscode-test/**
+.gitignore
+.eslintrc*
+**/*.map
+**/.DS_Store

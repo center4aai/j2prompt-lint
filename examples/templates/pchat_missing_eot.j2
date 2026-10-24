@@ -1,0 +1,9 @@
+{#- A bookshop chat prompt in ChatML; no turn is ever closed. -#}
+<|im_start|>system
+You help a small bookshop answer questions about opening hours and orders.
+{% for turn in conversation %}
+<|im_start|>{{ turn.role }}
+{{ turn.text }}
+{% endfor %}
+{% if add_generation_prompt %}<|im_start|>assistant
+{% endif %}

@@ -1,0 +1,130 @@
+{
+  "j2prompt_lint": {
+    "version": "0.1.0",
+    "wheel": "j2prompt_lint-0.1.0-py3-none-any.whl",
+    "sha256": "07b4e25a2d61b587f1dd45e2e877647f43369dbb147b518a7af96e45faa1ee46"
+  },
+  "pyodide": {
+    "version": "314.0.7",
+    "python": "3.14.2"
+  },
+  "files": {
+    "app.js": {
+      "sha256": "3bf552815d1c9999dd06b388e8654841ba170559be685b3d19436894509996d6",
+      "bytes": 15917,
+      "gzip_bytes": 5101
+    },
+    "editor.js": {
+      "sha256": "3a3c342773cab86b7e8bafe4febbb6c8d4cbf417f2536d348faf96732e90d6f3",
+      "bytes": 3688,
+      "gzip_bytes": 1583
+    },
+    "examples/clean_chat_turns.j2": {
+      "sha256": "6c76bf256481192b34fbf71e2618ceee5edb1711814e9f3df44c462485bba0f5",
+      "bytes": 229,
+      "gzip_bytes": 172
+    },
+    "examples/index.json": {
+      "sha256": "6306b620d4b345401b80b9301f03225f04a52d002120ff804fbd0d0da502515b",
+      "bytes": 1951,
+      "gzip_bytes": 743
+    },
+    "examples/pchat_no_end_of_turn.j2": {
+      "sha256": "684fc29769ee97a4d46a1a30d88e51cf0d5f2f7d37130680856052bef015edf2",
+      "bytes": 312,
+      "gzip_bytes": 219
+    },
+    "examples/pfmt_drift.j2": {
+      "sha256": "9c5662a9f4f1d57d1f90857c7b21ffc94ca70549f8b4d33eb90ed01db015048a",
+      "bytes": 191,
+      "gzip_bytes": 155
+    },
+    "examples/pinj_display_name.j2": {
+      "sha256": "522edff179920bc5e9e441dd73db3f1d5bc86bf200827372ddd9634a346932ae",
+      "bytes": 245,
+      "gzip_bytes": 189
+    },
+    "examples/ptok_long_instructions.j2": {
+      "sha256": "5ed357f357c66390b92fb3d1bae8f1f549ed54d5e61cef72d2257b60c6f1e533",
+      "bytes": 354,
+      "gzip_bytes": 248
+    },
+    "examples/pvar_contract.j2": {
+      "sha256": "a70bb3137a68ca034951a129646a12c1c21f48ed54ddb1e4c87dfcc8c91ff2ba",
+      "bytes": 232,
+      "gzip_bytes": 182
+    },
+    "favicon.svg": {
+      "sha256": "a9c509c1e7c4c30e770e358cf635a2245f18995e8c967632d542e194760e4295",
+      "bytes": 379,
+      "gzip_bytes": 213
+    },
+    "index.html": {
+      "sha256": "8fbffa1f12c38cb40733f920dcadeaf6ab85102f1ae587b66939f06503e6733d",
+      "bytes": 13930,
+      "gzip_bytes": 4532
+    },
+    "pyodide/jinja2-3.1.6-py3-none-any.whl": {
+      "sha256": "9330ec9cf2241fb8fc352928ea5e72016bf82de1d3d3b71ffea52a093a3ebab8",
+      "bytes": 134899,
+      "gzip_bytes": 133259
+    },
+    "pyodide/markupsafe-3.0.3-cp314-cp314-pyemscripten_2026_0_wasm32.whl": {
+      "sha256": "b44c364dc0d19e4210ce68ab77833c2b5d608f78fe6966263add4fc1fa667d97",
+      "bytes": 9986,
+      "gzip_bytes": 9004
+    },
+    "pyodide/pyodide-lock.json": {
+      "sha256": "5dc2fc119108bc148c7457dc86e7675b5c87e1cafd420b9c34c1eaef7b36c010",
+      "bytes": 119077,
+      "gzip_bytes": 26335
+    },
+    "pyodide/pyodide.asm.mjs": {
+      "sha256": "f7cdc8ece80678ceb712f8e65ebe6d3a83203a180c399865f49612a051693635",
+      "bytes": 1250344,
+      "gzip_bytes": 259957
+    },
+    "pyodide/pyodide.asm.wasm": {
+      "sha256": "cc36e3cab04fdfc9a63ff13eb52eae2b911bf46c025cc7b281f394bd3de1d5e6",
+      "bytes": 9598218,
+      "gzip_bytes": 3528803
+    },
+    "pyodide/pyodide.mjs": {
+      "sha256": "6f1d60f7bf529beb300f0f47983c921d3982363640ba20af0e38efdddbc66109",
+      "bytes": 17931,
+      "gzip_bytes": 7152
+    },
+    "pyodide/python_stdlib.zip": {
+      "sha256": "fa1957e5777068fc4f7437f96d860ae2fbe9c19732ba06c84e004ec16dd7dd7a",
+      "bytes": 2545637,
+      "gzip_bytes": 2503129
+    },
+    "runner.py": {
+      "sha256": "bba7da2cc02bac2b45cea362cd6371936f214b565cda6b143a319dd737869d00",
+      "bytes": 2040,
+      "gzip_bytes": 945
+    },
+    "style.css": {
+      "sha256": "2d0fb21062684bccbefea48da7ec5277ca6d2ecd4bdf420a6e794806b9abcc7e",
+      "bytes": 12882,
+      "gzip_bytes": 3355
+    },
+    "view.js": {
+      "sha256": "7f0ad780f124fab3c3444c2db8ced3cc4d86161750e12a9b6e157647d0747f09",
+      "bytes": 8326,
+      "gzip_bytes": 2995
+    },
+    "wheels/j2prompt_lint-0.1.0-py3-none-any.whl": {
+      "sha256": "07b4e25a2d61b587f1dd45e2e877647f43369dbb147b518a7af96e45faa1ee46",
+      "bytes": 725309,
+      "gzip_bytes": 721926
+    },
+    "worker.js": {
+      "sha256": "d1c1cd496bc3f133eb48cdc435f4b7c656a29e9a8cb76dff55f24108e463cafa",
+      "bytes": 7354,
+      "gzip_bytes": 2910
+    }
+  },
+  "total_bytes": 14469431,
+  "total_gzip_bytes": 7213107
+}

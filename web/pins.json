@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "pyodide": {
+    "version": "314.0.7",
+    "python": "3.14.2",
+    "license": "MPL-2.0",
+    "tarball": {
+      "url": "https://registry.npmjs.org/pyodide/-/pyodide-314.0.7.tgz",
+      "sha256": "66b7949e5a0cba2250b586d7e368bf12fb482800748d182c4618254b685ffaa0",
+      "integrity": "sha512-0YvXxEhfEdpLfb/XkM2BFAeMROq0iMUX2bzzH9pOttyMcWkwq+HbE5uyuGD82LN7y2q+SNvi/6V5JEsOlD2R1A=="
+    },
+    "core": {
+      "pyodide.mjs": "6f1d60f7bf529beb300f0f47983c921d3982363640ba20af0e38efdddbc66109",
+      "pyodide.asm.mjs": "f7cdc8ece80678ceb712f8e65ebe6d3a83203a180c399865f49612a051693635",
+      "pyodide.asm.wasm": "cc36e3cab04fdfc9a63ff13eb52eae2b911bf46c025cc7b281f394bd3de1d5e6",
+      "python_stdlib.zip": "fa1957e5777068fc4f7437f96d860ae2fbe9c19732ba06c84e004ec16dd7dd7a",
+      "pyodide-lock.json": "5dc2fc119108bc148c7457dc86e7675b5c87e1cafd420b9c34c1eaef7b36c010"
+    },
+    "packages": {
+      "jinja2-3.1.6-py3-none-any.whl": {
+        "url": "https://cdn.jsdelivr.net/pyodide/v314.0.7/full/jinja2-3.1.6-py3-none-any.whl",
+        "sha256": "9330ec9cf2241fb8fc352928ea5e72016bf82de1d3d3b71ffea52a093a3ebab8"
+      },
+      "markupsafe-3.0.3-cp314-cp314-pyemscripten_2026_0_wasm32.whl": {
+        "url": "https://cdn.jsdelivr.net/pyodide/v314.0.7/full/markupsafe-3.0.3-cp314-cp314-pyemscripten_2026_0_wasm32.whl",
+        "sha256": "b44c364dc0d19e4210ce68ab77833c2b5d608f78fe6966263add4fc1fa667d97"
+      }
+    }
+  },
+  "wheel": {
+    "file": "j2prompt_lint-0.1.0-py3-none-any.whl",
+    "version": "0.1.0",
+    "sha256": "07b4e25a2d61b587f1dd45e2e877647f43369dbb147b518a7af96e45faa1ee46",
+    "source_date_epoch": 1792766787,
+    "build_backend": "hatchling==1.32.4"
+  }
+}

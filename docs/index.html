@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; worker-src blob:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Try j2prompt-lint, a static, model-free, AST-level linter for Jinja2 LLM prompt templates, in your browser. Nothing is uploaded.">
+<meta name="j2pl-wheel" content="j2prompt_lint-0.1.0-py3-none-any.whl" data-sha256="07b4e25a2d61b587f1dd45e2e877647f43369dbb147b518a7af96e45faa1ee46" data-version="0.1.0">
+<title>j2prompt-lint playground</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#results">Skip to results</a>
+<header class="site-header">
+  <div class="brand">
+    <h1>j2prompt-lint <span class="brand-sub">playground</span></h1>
+    <p class="tagline">A static, model-free, AST-level linter for Jinja2 LLM prompt templates, running entirely in your browser.</p>
+  </div>
+  <div class="runtime" id="runtime" data-state="loading">
+    <p class="runtime-status" id="runtime-status" role="status" aria-live="polite">Loading the linter…</p>
+    <progress id="runtime-progress" max="5" value="0" aria-label="Loading progress"></progress>
+  </div>
+</header>
+
+<noscript>
+  <p class="banner banner-error">The playground needs JavaScript and WebAssembly. You can also <a href="wheels/j2prompt_lint-0.1.0-py3-none-any.whl">download its verified wheel</a>, install it and run <code>j2prompt-lint your_template.j2</code> locally.</p>
+</noscript>
+<div class="banner banner-error" id="fatal" role="alert" hidden></div>
+
+<main class="layout">
+  <section class="pane editor-pane" aria-labelledby="editor-heading">
+    <h2 id="editor-heading" class="visually-hidden">Template</h2>
+    <div class="toolbar">
+      <label class="field field-example">
+        <span class="field-label">Example</span>
+        <select id="example-select">
+          <option value="">Your own template</option>
+        </select>
+      </label>
+      <label class="field field-file">
+        <span class="field-label">File name</span>
+        <input id="file-name" type="text" value="template.j2" spellcheck="false" autocomplete="off" aria-describedby="file-name-help">
+      </label>
+      <div class="toolbar-actions">
+        <button type="button" id="open-file" class="button">Open file…</button>
+        <input type="file" id="file-input" class="visually-hidden" tabindex="-1" aria-hidden="true">
+        <button type="button" id="lint-button" class="button button-primary" aria-keyshortcuts="Control+Enter" disabled>Lint</button>
+      </div>
+    </div>
+    <p class="help" id="file-name-help">The name the CLI sees. Its suffix matters: <code>.md</code> selects the plain-markdown rule subset.</p>
+    <p class="example-summary" id="example-summary" aria-live="polite"></p>
+    <div class="editor">
+      <div class="gutter" id="gutter" aria-hidden="true"></div>
+      <textarea id="source" wrap="off" spellcheck="false" autocomplete="off" autocapitalize="off" aria-label="Template source" aria-describedby="source-help" aria-keyshortcuts="Control+Enter"></textarea>
+    </div>
+    <div class="notice notice-inline" id="json-notice" hidden>
+      <p>This looks like a chat template copied from <code>tokenizer_config.json</code>, still JSON-escaped. <button type="button" id="json-decode" class="button button-small">Decode it</button></p>
+    </div>
+    <p class="help" id="source-help"><span id="source-stats">0 lines</span><span id="source-bytes-note"></span> · Lints as you type; <kbd>Ctrl</kbd>+<kbd>Enter</kbd> lints at once. Paste, open or drop a file.</p>
+
+    <fieldset class="options">
+      <legend>Options <span class="legend-note">(the CLI's own flags)</span></legend>
+      <div class="options-grid">
+        <label class="field">
+          <span class="field-label"><code>--declare</code></span>
+          <input id="opt-declare" type="text" spellcheck="false" autocomplete="off" placeholder="user_name,system_role" aria-describedby="opt-declare-help">
+          <span class="help" id="opt-declare-help">PVAR variable contract, comma-separated.</span>
+        </label>
+        <label class="field">
+          <span class="field-label"><code>--untrusted</code></span>
+          <input id="opt-untrusted" type="text" spellcheck="false" autocomplete="off" placeholder="user_input,retrieved_doc" aria-describedby="opt-untrusted-help">
+          <span class="help" id="opt-untrusted-help">PINJ untrusted variables, comma-separated.</span>
+        </label>
+        <label class="field">
+          <span class="field-label"><code>--pinj-source-model</code></span>
+          <select id="opt-source-model" aria-describedby="opt-source-model-help">
+            <option value="">default (configured)</option>
+            <option value="configured">configured</option>
+            <option value="undeclared">undeclared</option>
+          </select>
+          <span class="help" id="opt-source-model-help"><code>undeclared</code> treats every undeclared variable as untrusted.</span>
+        </label>
+        <label class="field">
+          <span class="field-label"><code>--budget</code></span>
+          <input id="opt-budget" type="text" inputmode="numeric" spellcheck="false" autocomplete="off" placeholder="none" aria-describedby="opt-budget-help">
+          <span class="help" id="opt-budget-help">PTOK static token budget. The browser cannot count tokens; see below.</span>
+        </label>
+        <label class="field">
+          <span class="field-label"><code>--fail-on</code></span>
+          <select id="opt-fail-on" aria-describedby="opt-fail-on-help">
+            <option value="error">error (default)</option>
+            <option value="warning">warning</option>
+            <option value="info">info</option>
+          </select>
+          <span class="help" id="opt-fail-on-help">Lowest severity that fails the run.</span>
+        </label>
+      </div>
+    </fieldset>
+
+    <div class="command">
+      <div class="command-head">
+        <h3 id="command-heading">Equivalent command</h3>
+        <button type="button" id="copy-command" class="button button-small" aria-describedby="command-heading">Copy</button>
+      </div>
+      <pre class="command-line"><code id="command">j2prompt-lint template.j2</code></pre>
+      <p class="help">After installing <a href="wheels/j2prompt_lint-0.1.0-py3-none-any.whl">this same wheel</a>, run this command locally. The local base install counts with its pinned reference tokenizer. Exact model-native counts need the configured optional tokenizer and local cache.</p>
+    </div>
+  </section>
+
+  <section class="pane results-pane" id="results" aria-labelledby="results-heading" tabindex="-1">
+    <h2 id="results-heading">Results</h2>
+    <div class="summary" id="summary" aria-live="polite" aria-atomic="true">
+      <p class="summary-counts" id="summary-counts">The linter is loading. You can edit the template meanwhile.</p>
+      <p class="summary-gate" id="summary-gate"></p>
+      <p class="summary-timing" id="summary-timing"></p>
+      <p class="help" id="pinj-analysis" role="status" aria-live="polite"></p>
+    </div>
+    <div class="notice" id="ptok-notice" hidden>
+      <p><strong>This pinned browser runtime does not include a tokenizer.</strong> The engine reports its own <code>PTOK/budget-unknown</code> disclosure instead of a count. No pass/fail verdict is shown while a budget is set. For reference-token counts, install the same wheel and run the equivalent local command. Model-native counts require the appropriate configured tokenizer.</p>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Output views">
+      <button type="button" role="tab" id="tab-diagnostics" aria-controls="panel-diagnostics" aria-selected="true" tabindex="0" data-view="diagnostics">Diagnostics</button>
+      <button type="button" role="tab" id="tab-text" aria-controls="panel-text" aria-selected="false" tabindex="-1" data-view="text">Text</button>
+      <button type="button" role="tab" id="tab-json" aria-controls="panel-json" aria-selected="false" tabindex="-1" data-view="json">JSON</button>
+      <button type="button" role="tab" id="tab-sarif" aria-controls="panel-sarif" aria-selected="false" tabindex="-1" data-view="sarif">SARIF</button>
+      <button type="button" role="tab" id="tab-diff" aria-controls="panel-diff" aria-selected="false" tabindex="-1" data-view="diff">Fix preview</button>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-diagnostics" aria-labelledby="tab-diagnostics" tabindex="0">
+      <ol class="diagnostics" id="diagnostics"></ol>
+      <p class="empty" id="diagnostics-empty" hidden>No diagnostics.</p>
+      <div class="scope-reminder" id="scope-reminder" hidden>
+        <p><strong>PINJ scope:</strong> <span id="scope-reminder-text"></span></p>
+      </div>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-text" aria-labelledby="tab-text" tabindex="0" hidden>
+      <p class="help">The CLI's default output, <code>--format text</code>. Locations are links into the editor.</p>
+      <pre class="output" id="output-text"></pre>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-json" aria-labelledby="tab-json" tabindex="0" hidden>
+      <p class="help">The JSON envelope (<code>--format json</code>) this page renders its diagnostics from.</p>
+      <pre class="output" id="output-json"></pre>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-sarif" aria-labelledby="tab-sarif" tabindex="0" hidden>
+      <p class="help">SARIF 2.1.0 (<code>--format sarif</code>), as code-scanning services read it.</p>
+      <pre class="output" id="output-sarif"></pre>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-diff" aria-labelledby="tab-diff" tabindex="0" hidden>
+      <p class="help">What <code>--fix</code> would change, from <code>--diff</code>. Nothing is rewritten here.</p>
+      <pre class="output output-diff" id="output-diff"></pre>
+    </div>
+  </section>
+</main>
+
+<section class="about" aria-labelledby="about-heading">
+  <h2 id="about-heading">About this page</h2>
+  <div class="about-grid">
+    <div>
+      <h3>How it runs</h3>
+      <p>The page runs the <code>j2prompt-lint</code> 0.1.0 wheel on CPython 3.14.2 compiled to WebAssembly (Pyodide 314.0.7), inside a Web Worker. Each lint calls the CLI's own <code>main()</code> on an in-memory file; the diagnostics are rendered from its JSON envelope. The wheel's sha256 is checked before it is installed.</p>
+      <p>No model is called and no server does any work: every file this page loads is static and served from this site. Its Content-Security-Policy (<code>connect-src 'self'</code>) lets the analysis contact no other host.</p>
+    </div>
+    <div>
+      <h3 id="pinj-scope-heading">PINJ scope</h3>
+      <p class="scope-statement" id="pinj-scope">PINJ flags template positions where untrusted variables reach instruction contexts — an over-approximation of prompt-injection enabling patterns — and certifies neither the presence nor the absence of an exploitable attack.</p>
+      <p>The selected source model decides which variables are untrusted. The default is <code>configured</code>, using explicit sources and annotations. If no variable is marked untrusted, PINJ reports that no untrusted flow was checked. This differs from a sourceful analysis with no findings.</p>
+    </div>
+    <div>
+      <h3>What this tool does not claim</h3>
+      <ul class="claims">
+        <li>It does not originate static prompt linting: PromptSet introduced the concept on prompt strings in Python code. This tool works on Jinja2 templates, at the level of the template AST.</li>
+        <li>LLM judging predates this tool in PromptDoctor and Microsoft Chat Customizations Evaluations. PromptDoctor additionally executes attacks and performs LLM-based repair.</li>
+        <li>PINJ is not a prompt-injection defence; it detects no attack at inference time (see its scope above).</li>
+        <li>Its five rule classes are not a complete taxonomy of prompt defects; they are aligned to the taxonomy of Tian et al.</li>
+        <li>It does not detect semantic defects such as contradiction, ambiguity or gaps in intent coverage.</li>
+        <li>It does not originate Jinja2 variable-contract checking or framework message validation. Existing tools include promptkit-core and promptflow.</li>
+        <li>Render-free Jinja2-AST security auditing predates it in c4nary, glyphhound and chatpin. c4nary also propagates taint to identify template-planted instructions. PINJ assumes a trusted template and asks about untrusted values.</li>
+        <li>Region-aware prompt-injection taint in host code predates it in CodeQL. TaintP2X and agentic-guard also analyze host code.</li>
+        <li>Chat-format conformance checking predates it, including ChatLint's rendered conversations and gguf-template-doctor's scanner. PCHAT checks bounded conditions on the Jinja2 AST.</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Third-party software</h3>
+      <p>Served unmodified from this site: Pyodide (MPL-2.0), CPython and its standard library (PSF License), Jinja2 and MarkupSafe (BSD-3-Clause). <code>j2prompt-lint</code> is licensed under Apache-2.0.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <p><span id="footer-version">j2prompt-lint 0.1.0</span> · wheel sha256 <code class="sha" id="footer-sha">07b4e25a2d61b587f1dd45e2e877647f43369dbb147b518a7af96e45faa1ee46</code> · Pyodide 314.0.7</p>
+  <p class="footer-privacy">runs in your browser — nothing is uploaded — no analytics</p>
+</footer>
+</body>
+</html>

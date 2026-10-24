@@ -1,0 +1,15 @@
+{
+  // Launches the j2prompt-lint client in a VS Code Extension Development Host.
+  // Open the editors/vscode/ folder as the workspace root, then press F5
+  // (or Run and Debug -> "Run Extension"). Plain-JS extension, no build step,
+  // so there is no preLaunchTask / outFiles.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Extension",
+      "type": "extensionHost",
+      "request": "launch",
+      "args": ["--extensionDevelopmentPath=${workspaceFolder}"]
+    }
+  ]
+}
